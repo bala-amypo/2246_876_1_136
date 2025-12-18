@@ -1,12 +1,10 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor
 public class FinancialProfile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,4 +21,43 @@ public class FinancialProfile {
 
     @UpdateTimestamp
     private Timestamp lastUpdatedAt;
+
+    // Constructors
+    public FinancialProfile() {}
+
+    public FinancialProfile(Long id, User user, Double monthlyIncome, Double monthlyExpenses, Double existingLoanEmi, Integer creditScore, Double savingsBalance, Timestamp lastUpdatedAt) {
+        this.id = id;
+        this.user = user;
+        this.monthlyIncome = monthlyIncome;
+        this.monthlyExpenses = monthlyExpenses;
+        this.existingLoanEmi = existingLoanEmi;
+        this.creditScore = creditScore;
+        this.savingsBalance = savingsBalance;
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public Double getMonthlyIncome() { return monthlyIncome; }
+    public void setMonthlyIncome(Double monthlyIncome) { this.monthlyIncome = monthlyIncome; }
+
+    public Double getMonthlyExpenses() { return monthlyExpenses; }
+    public void setMonthlyExpenses(Double monthlyExpenses) { this.monthlyExpenses = monthlyExpenses; }
+
+    public Double getExistingLoanEmi() { return existingLoanEmi; }
+    public void setExistingLoanEmi(Double existingLoanEmi) { this.existingLoanEmi = existingLoanEmi; }
+
+    public Integer getCreditScore() { return creditScore; }
+    public void setCreditScore(Integer creditScore) { this.creditScore = creditScore; }
+
+    public Double getSavingsBalance() { return savingsBalance; }
+    public void setSavingsBalance(Double savingsBalance) { this.savingsBalance = savingsBalance; }
+
+    public Timestamp getLastUpdatedAt() { return lastUpdatedAt; }
+    public void setLastUpdatedAt(Timestamp lastUpdatedAt) { this.lastUpdatedAt = lastUpdatedAt; }
 }
