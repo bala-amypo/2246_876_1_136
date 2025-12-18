@@ -7,28 +7,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
 }
-File: src/main/java/com/example/demo/repository/FinancialProfileRepository.java
-code
-Java
-package com.example.demo.repository;
-import com.example.demo.entity.FinancialProfile;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
 
-public interface FinancialProfileRepository extends JpaRepository<FinancialProfile, Long> {
-    Optional<FinancialProfile> findByUserId(Long userId);
-}
-File: src/main/java/com/example/demo/repository/LoanRequestRepository.java
-code
-Java
-package com.example.demo.repository;
-import com.example.demo.entity.LoanRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
 
-public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> {
-    List<LoanRequest> findByUserId(Long userId);
-}
 File: src/main/java/com/example/demo/repository/EligibilityResultRepository.java
 code
 Java
