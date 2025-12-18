@@ -16,7 +16,7 @@ public class LoanEligibilityService {
     private final EligibilityResultRepository eligibilityRepository;
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository profileRepository;
-    private final RiskAssessmentLogService riskLogService;
+    private final RiskAssessmentLogService riskLogService;9
 
     public LoanEligibilityService(EligibilityResultRepository eligibilityRepository,
                                   LoanRequestRepository loanRequestRepository,
