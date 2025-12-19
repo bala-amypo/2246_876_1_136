@@ -1,6 +1,10 @@
 package com.example.demo.service;
 
-public interface LoanEligibilityService {
-    boolean checkEligibility(Long userId);
-}
+import com.example.demo.entity.LoanEligibility;
 
+public interface LoanEligibilityService {
+
+    LoanEligibility evaluateEligibility(Long loanRequestId);
+
+    LoanEligibility getByLoanRequestId(Long loanRequestId);
+}
