@@ -1,8 +1,11 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.LoanRequest;
 import com.example.demo.repository.LoanRequestRepository;
+import com.example.demo.service.LoanRequestService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LoanRequestServiceImpl implements LoanRequestService {
@@ -14,7 +17,23 @@ public class LoanRequestServiceImpl implements LoanRequestService {
     }
 
     @Override
-    public LoanRequest apply(LoanRequest request) {
+    public LoanRequest submitRequest(LoanRequest request) {
         return repository.save(request);
+    }
+
+    @Override
+    public List<LoanRequest> getRequestsByUser(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
+    @Override
+    public LoanRequest getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+    }
+
+    @Override
+    public List<LoanRequest> getAllRequests() {
+        return repository.findAll();
     }
 }

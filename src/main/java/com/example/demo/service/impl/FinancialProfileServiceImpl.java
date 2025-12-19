@@ -1,7 +1,8 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.FinancialProfile;
 import com.example.demo.repository.FinancialProfileRepository;
+import com.example.demo.service.FinancialProfileService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,13 @@ public class FinancialProfileServiceImpl implements FinancialProfileService {
     }
 
     @Override
-    public FinancialProfile saveProfile(FinancialProfile profile) {
+    public FinancialProfile createOrUpdate(FinancialProfile profile) {
         return repository.save(profile);
+    }
+
+    @Override
+    public FinancialProfile getByUserId(Long userId) {
+        return repository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
     }
 }
