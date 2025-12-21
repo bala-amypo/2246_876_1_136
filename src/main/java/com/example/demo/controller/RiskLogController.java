@@ -12,11 +12,14 @@ import com.example.demo.service.RiskAssessmentLogService;
 @RequestMapping("/api/risk-logs")
 public class RiskLogController {
 
-    private final RiskAssessmentLogService service;
+    import com.example.demo.service.RiskAssessmentLogService;
 
-    public RiskLogController(RiskAssessmentLogService service) {
-        this.service = service;
-    }
+private final RiskAssessmentLogService riskAssessmentLogService;
+
+        public RiskLogController(RiskAssessmentLogService riskAssessmentLogService) {
+    this.riskAssessmentLogService = riskAssessmentLogService;
+}
+
 
     @GetMapping("/{loanRequestId}")
     public ResponseEntity<List<RiskAssessmentLog>> getRiskLogs(

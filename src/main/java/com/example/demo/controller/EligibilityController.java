@@ -10,11 +10,13 @@ import com.example.demo.service.EligibilityService;
 @RequestMapping("/api/eligibility")
 public class EligibilityController {
 
-    private final EligibilityService service;
+    private final EligibilityService eligibilityService;
 
-    public EligibilityController(EligibilityService service) {
-        this.service = service;
-    }
+        public EligibilityController(EligibilityService eligibilityService) {
+            this.eligibilityService = eligibilityService;
+         
+        }
+
 
     @GetMapping("/{loanRequestId}")
     public ResponseEntity<EligibilityResult> checkEligibility(
