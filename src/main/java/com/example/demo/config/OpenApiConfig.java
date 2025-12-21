@@ -17,7 +17,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
 
         Server server = new Server();
-        server.setUrl("https://9061.pro604cr.amypo.ai/");
+        server.setUrl("https://9085.pro604cr.amypo.ai/");
 
         SecurityScheme bearerScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP)
