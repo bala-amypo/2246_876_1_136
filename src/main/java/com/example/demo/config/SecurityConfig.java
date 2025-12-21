@@ -28,13 +28,16 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
+                    .requestMatchers(
+                         "/auth/**",
+                        "/swagger-ui/**",
+                         "/swagger-ui.html",
+                         "/v3/api-docs/**",
+                        "/status"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+                )   
+
                 .addFilterBefore(jwtFilter,
                         UsernamePasswordAuthenticationFilter.class);
 
