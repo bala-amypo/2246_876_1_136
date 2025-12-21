@@ -1,11 +1,11 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 
 @Component
@@ -17,25 +17,29 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private int expiration;
 
-    private Key getKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
-    }
-
-    public String generateToken(String username) {
+    public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getEmail(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
+        return claims.getSubject();
     }
 }
