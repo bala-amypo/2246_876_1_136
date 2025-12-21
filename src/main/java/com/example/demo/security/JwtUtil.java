@@ -1,57 +1,41 @@
 package com.example.demo.security;
 
-import java.util.Date;
-import java.util.Map;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-
-import javax.crypto.SecretKey;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
+import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final SecretKey key = Keys.hmacShaKeyFor(
-            "mysecretkeymysecretkeymysecretkey".getBytes()
-    );
+    @Value("${jwt.secret}")
+    private String secret;
 
-    private final long validityInMs = 3600000; // 1 hour
+    @Value("${jwt.expiration}")
+    private int expiration;
 
-    public String generateToken(Map<String, Object> claims, String subject) {
+    private Key getKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + validityInMs))
-                .signWith(key)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Claims getAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(key)
+    public String extractUsername(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    public String getEmail(String token) {
-        return getAllClaims(token).getSubject();
-    }
-
-    public String getRole(String token) {
-        return getAllClaims(token).get("role", String.class);
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            getAllClaims(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }
