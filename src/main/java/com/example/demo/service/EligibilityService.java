@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.EligibilityResult;
 
-public interface LoanEligibilityService {
+public interface EligibilityService {
 
     EligibilityResult evaluateEligibility(Long loanRequestId);
 
