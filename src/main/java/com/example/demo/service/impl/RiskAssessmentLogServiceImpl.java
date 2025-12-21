@@ -6,16 +6,16 @@ import com.example.demo.entity.*;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.*;
-import com.example.demo.service.RiskAssessmentService;
+import com.example.demo.service.RiskAssessmentLogService;
 
 @Service
-public class RiskAssessmentServiceImpl implements RiskAssessmentService {
+public class RiskAssessmentLogServiceImpl implements RiskAssessmentLogService {
 
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository profileRepository;
     private final RiskAssessmentLogRepository riskRepository;
 
-    public RiskAssessmentServiceImpl(LoanRequestRepository loanRequestRepository,
+    public RiskAssessmentLogServiceImpl(LoanRequestRepository loanRequestRepository,
                                      FinancialProfileRepository profileRepository,
                                      RiskAssessmentLogRepository riskRepository) {
         this.loanRequestRepository = loanRequestRepository;
