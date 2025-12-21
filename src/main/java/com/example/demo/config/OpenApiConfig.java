@@ -15,7 +15,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .servers(List.of(
                         new Server()
-                                .url("https://9085.pro604cr.amypo.ai")
+                                .url("https://9085.pro604cr.amypo.ai/")
                                 .description("Loan Eligibility API")
                 ));
     }
