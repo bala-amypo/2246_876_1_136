@@ -12,20 +12,27 @@ import com.example.demo.service.RiskAssessmentLogService;
 @RequestMapping("/api/risk-logs")
 public class RiskLogController {
 
-    import com.example.demo.service.RiskAssessmentLogService;
+    private final RiskAssessmentLogService riskAssessmentLogService;
 
-private final RiskAssessmentLogService riskAssessmentLogService;
+    public RiskLogController(RiskAssessmentLogService riskAssessmentLogService) {
+        this.riskAssessmentLogService = riskAssessmentLogService;
+    }
 
-        public RiskLogController(RiskAssessmentLogService riskAssessmentLogService) {
-    this.riskAssessmentLogService = riskAssessmentLogService;
-}
-
-
-    @GetMapping("/{loanRequestId}")
-    public ResponseEntity<List<RiskAssessmentLog>> getRiskLogs(
+    @PostMapping("/assess/{loanRequestId}")
+    public ResponseEntity<RiskAssessmentLog> assessRisk(
             @PathVariable Long loanRequestId) {
 
         return ResponseEntity.ok(
-                service.getLogsByLoanRequestId(loanRequestId));
+                riskAssessmentLogService.assessRisk(loanRequestId)
+        );
+    }
+
+    @GetMapping("/{loanRequestId}")
+    public ResponseEntity<List<RiskAssessmentLog>> getLogs(
+            @PathVariable Long loanRequestId) {
+
+        return ResponseEntity.ok(
+                riskAssessmentLogService.getByLoanRequestId(loanRequestId)
+        );
     }
 }
