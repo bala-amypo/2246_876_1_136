@@ -16,9 +16,3 @@ public class LoanDtos {
         public Double savingsBalance;
     }
 }
-entity
-├── User.java
-├── FinancialProfile.java
-├── LoanRequest.java
-├── EligibilityResult.java
-├── RiskAssessmentLog.java
