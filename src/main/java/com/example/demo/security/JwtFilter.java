@@ -57,3 +57,16 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+service
+├── UserService.java
+├── FinancialProfileService.java
+├── LoanRequestService.java
+├── LoanEligibilityService.java
+├── RiskAssessmentLogService.java
+│
+└── impl
+    ├── UserServiceImpl.java
+    ├── FinancialProfileServiceImpl.java
+    ├── LoanRequestServiceImpl.java
+    ├── LoanEligibilityServiceImpl.java
+    ├── RiskAssessmentLogServiceImpl.java

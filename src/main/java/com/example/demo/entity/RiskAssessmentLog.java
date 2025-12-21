@@ -34,7 +34,3 @@ public class RiskAssessmentLog {
     public Instant getTimestamp() { return timestamp; }
     public void setTimestamp(Instant timestamp) { this.timestamp = timestamp; }
 }
-exception
-├── BadRequestException.java
-├── ResourceNotFoundException.java
-├── GlobalExceptionHandler.java
