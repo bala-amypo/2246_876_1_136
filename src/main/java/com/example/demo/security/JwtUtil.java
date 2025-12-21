@@ -5,36 +5,45 @@ import java.util.Map;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
+import javax.crypto.SecretKey;
+
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtUtil {
 
-    private final String secret;
-    private final long validityInMs;
+    private final SecretKey key = Keys.hmacShaKeyFor(
+            "mysecretkeymysecretkeymysecretkey".getBytes()
+    );
 
-    public JwtUtil(String secret, long validityInMs) {
-        this.secret = secret;
-        this.validityInMs = validityInMs;
-    }
+    private final long validityInMs = 3600000; // 1 hour
 
     public String generateToken(Map<String, Object> claims, String subject) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + validityInMs);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validityInMs))
+                .signWith(key)
                 .compact();
     }
 
     public Claims getAllClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody();
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    public String getEmail(String token) {
+        return getAllClaims(token).getSubject();
+    }
+
+    public String getRole(String token) {
+        return getAllClaims(token).get("role", String.class);
     }
 
     public boolean validateToken(String token) {
@@ -44,14 +53,5 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public String getEmail(String token) {
-        return getAllClaims(token).getSubject();
-    }
-
-    public String getRole(String token) {
-        Object role = getAllClaims(token).get("role");
-        return role == null ? null : role.toString();
     }
 }
