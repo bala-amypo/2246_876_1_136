@@ -83,16 +83,17 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<!-- Ensures Maven knows exactly where your main() method is -->
-					<mainClass>com.example.demo.DemoApplication</mainClass>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <mainClass>
+                    com.example.demo.LoanEligibilityEmiRiskCheckerApplication
+                </mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 
 </project>
