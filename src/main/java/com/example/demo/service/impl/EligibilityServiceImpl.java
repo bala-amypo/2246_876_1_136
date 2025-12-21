@@ -1,73 +1,81 @@
 package com.example.demo.service.impl;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.*;
+import com.example.demo.entity.EligibilityResult;
+import com.example.demo.entity.FinancialProfile;
+import com.example.demo.entity.LoanRequest;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.*;
+import com.example.demo.repository.EligibilityResultRepository;
+import com.example.demo.repository.FinancialProfileRepository;
+import com.example.demo.repository.LoanRequestRepository;
 import com.example.demo.service.EligibilityService;
 
 @Service
 public class EligibilityServiceImpl implements EligibilityService {
 
     private final LoanRequestRepository loanRequestRepository;
-    private final FinancialProfileRepository profileRepository;
-    private final EligibilityResultRepository eligibilityRepository;
+    private final FinancialProfileRepository financialProfileRepository;
+    private final EligibilityResultRepository eligibilityResultRepository;
 
-    public LoanEligibilityServiceImpl(LoanRequestRepository loanRequestRepository,
-                                      FinancialProfileRepository profileRepository,
-                                      EligibilityResultRepository eligibilityRepository) {
+    public EligibilityServiceImpl(
+            LoanRequestRepository loanRequestRepository,
+            FinancialProfileRepository financialProfileRepository,
+            EligibilityResultRepository eligibilityResultRepository) {
+
         this.loanRequestRepository = loanRequestRepository;
-        this.profileRepository = profileRepository;
-        this.eligibilityRepository = eligibilityRepository;
+        this.financialProfileRepository = financialProfileRepository;
+        this.eligibilityResultRepository = eligibilityResultRepository;
     }
 
     @Override
     public EligibilityResult evaluateEligibility(Long loanRequestId) {
 
-        if (eligibilityRepository.findByLoanRequestId(loanRequestId).isPresent()) {
+        if (eligibilityResultRepository.findByLoanRequestId(loanRequestId).isPresent()) {
             throw new BadRequestException("Eligibility already evaluated");
         }
 
         LoanRequest loanRequest = loanRequestRepository.findById(loanRequestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Loan request not found"));
 
-        FinancialProfile profile = profileRepository.findByUserId(
-                loanRequest.getUser().getId())
+        FinancialProfile profile = financialProfileRepository
+                .findByUserId(loanRequest.getUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Financial profile not found"));
 
-        double totalObligations =
+        double totalObligation =
                 profile.getMonthlyExpenses() +
                 (profile.getExistingLoanEmi() == null ? 0 : profile.getExistingLoanEmi());
 
-        double dti = totalObligations / profile.getMonthlyIncome();
+        double dti = totalObligation / profile.getMonthlyIncome();
 
-        boolean eligible = profile.getCreditScore() >= 650 && dti <= 0.5;
+        EligibilityResult result = new EligibilityResult();
+        result.setLoanRequest(loanRequest);
+        result.setCalculatedAt(LocalDateTime.now());
 
-        double maxEligibleAmount = eligible ? profile.getMonthlyIncome() * 10 : 0;
-        double emi = eligible ? (maxEligibleAmount / loanRequest.getTenureMonths()) : 0;
+        if (profile.getCreditScore() < 600 || dti > 0.6) {
+            result.setEligible(false);
+            result.setRiskLevel("HIGH");
+            result.setRejectionReason("High risk applicant");
+            result.setMaxEligibleAmount(0.0);
+            result.setEstimatedEmi(0.0);
+        } else {
+            result.setEligible(true);
+            result.setRiskLevel(dti < 0.3 ? "LOW" : "MEDIUM");
 
-        String risk = dti < 0.3 ? "LOW" : dti < 0.5 ? "MEDIUM" : "HIGH";
+            double maxAmount = profile.getMonthlyIncome() * 20;
+            result.setMaxEligibleAmount(maxAmount);
+            result.setEstimatedEmi(maxAmount / loanRequest.getTenureMonths());
+        }
 
-        EligibilityResult result = new EligibilityResult(
-                loanRequest,
-                eligible,
-                maxEligibleAmount,
-                emi,
-                risk,
-                eligible ? null : "High risk profile"
-        );
-
-        loanRequest.setStatus(eligible ? "APPROVED" : "REJECTED");
-        loanRequestRepository.save(loanRequest);
-
-        return eligibilityRepository.save(result);
+        return eligibilityResultRepository.save(result);
     }
 
     @Override
     public EligibilityResult getByLoanRequestId(Long loanRequestId) {
-        return eligibilityRepository.findByLoanRequestId(loanRequestId)
+        return eligibilityResultRepository.findByLoanRequestId(loanRequestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Eligibility result not found"));
     }
 }
