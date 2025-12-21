@@ -10,7 +10,14 @@ import java.util.List;
 public class RiskAssessmentLogServiceImpl implements RiskAssessmentLogService {
 
     @Override
+    public RiskAssessmentLog assessRisk(Long loanRequestId) {
+        RiskAssessmentLog log = new RiskAssessmentLog();
+        log.setRiskLevel("LOW");
+        return log;
+    }
+
+    @Override
     public List<RiskAssessmentLog> getByLoanRequestId(Long loanRequestId) {
-        return List.of(); // dummy
+        return List.of();
     }
 }
