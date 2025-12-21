@@ -4,15 +4,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
-@Service
+@Component
 public class JwtUtil {
-    private final String SECRET_KEY = "your_very_long_and_very_secure_secret_key_here";
+    // Note: In a real app, move this to application.properties
+    private final String SECRET_KEY = "your_very_long_and_very_secure_secret_key_for_jwt_token_generation";
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
@@ -29,6 +30,16 @@ public class JwtUtil {
                 .parseSignedClaims(token)
                 .getPayload();
         return claimsResolver.apply(claims);
+    }
+
+    // THIS IS THE MISSING METHOD YOUR CONTROLLER NEEDS
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
+                .signWith(getSigningKey())
+                .compact();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

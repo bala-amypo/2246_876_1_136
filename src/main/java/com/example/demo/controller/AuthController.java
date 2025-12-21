@@ -1,35 +1,41 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        this.jwtUtil = new JwtUtil("my-secret-key-my-secret-key", 3600000);
-    }
+    @Autowired
+    private JwtUtil jwtUtil; // DON'T use 'new JwtUtil()', use @Autowired
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
+        String username = loginRequest.get("username");
+        String password = loginRequest.get("password");
 
-        User user = userRepository.findByEmail(request.email)
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        // 1. Authenticate the user
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+        );
 
-        if (!user.getPassword().equals(request.password)) {
-            throw new RuntimeException("Invalid credentials");
-        }
+        // 2. Generate the token
+        String token = jwtUtil.generateToken(username);
 
-        String token = jwtUtil.generateToken(user.getEmail());
-        return new AuthResponse(token);
+        // 3. Return the response
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return ResponseEntity.ok(response);
     }
 }
