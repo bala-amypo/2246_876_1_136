@@ -2,52 +2,64 @@ package com.example.demo.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    // Note: In a real app, move this to application.properties
-    private final String SECRET_KEY = "your_very_long_and_very_secure_secret_key_for_jwt_token_generation";
 
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
-    }
+    // MUST be at least 32 characters for HS256
+    private static final String SECRET_KEY =
+            "LoanEligibilitySecretKey123456789012345";
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+    private static final long EXPIRATION_TIME = 86400000; // 1 day
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-        return claimsResolver.apply(claims);
-    }
+    private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-    // THIS IS THE MISSING METHOD YOUR CONTROLLER NEEDS
+    // ======================
+    // Generate Token
+    // ======================
     public String generateToken(String username) {
+
         return Jwts.builder()
-                .subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
-                .signWith(getSigningKey())
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    // ======================
+    // Extract Username
+    // ======================
+    public String extractUsername(String token) {
+        return getClaims(token).getSubject();
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+    // ======================
+    // Validate Token
+    // ======================
+    public boolean validateToken(String token) {
+        try {
+            getClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // ======================
+    // Parse Claims
+    // ======================
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
