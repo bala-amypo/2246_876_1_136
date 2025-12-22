@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LoanEligibilityEmiRiskCheckerApplication {
+public class DemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(LoanEligibilityEmiRiskCheckerApplication.class, args);
+        SpringApplication.run(DemoApplication.class, args);
     }
 }
