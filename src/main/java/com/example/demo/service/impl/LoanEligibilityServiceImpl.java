@@ -22,7 +22,7 @@ public class LoanEligibilityServiceImpl implements LoanEligibilityService {
         this.loanRequestRepository = loanRequestRepository;
         this.financialProfileRepository = financialProfileRepository;
         this.eligibilityResultRepository = eligibilityResultRepository;
-        this.riskAssessmentLogRepository = riskAssessmentLogRepository;
+        this.riskAssessmentRepository = riskAssessmentRepository;
     }
 
     @Override
@@ -51,11 +51,11 @@ public class LoanEligibilityServiceImpl implements LoanEligibilityService {
 
         eligibilityResultRepository.save(result);
 
-        RiskAssessmentLog log = new RiskAssessmentLog();
+        RiskAssessment log = new RiskAssessment();
         log.setLoanRequestId(loanRequestId);
         log.setDtiRatio(dtiRatio);
         log.setCreditCheckStatus("COMPLETED");
-        riskAssessmentLogRepository.save(log);
+        riskAssessmentRepository.save(log);
 
         return result;
     }
