@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-public class RiskAssessmentLog {
+public class RiskAssessment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class RiskAssessmentLog {
     private Instant timestamp = Instant.now();
 
     // ✅ EMPTY CONSTRUCTOR
-    public RiskAssessmentLog() {
+    public RiskAssessment() {
     }
 
     // Getters & Setters
