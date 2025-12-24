@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.RiskAssessmentLog;
-import com.example.demo.repository.RiskAssessmentLogRepository;
+import com.example.demo.entity.RiskAssessment;
+import com.example.demo.repository.RiskAssessmentRepository;
 import com.example.demo.service.RiskAssessmentService;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +12,17 @@ public class RiskAssessmentServiceImpl implements RiskAssessmentService {
 
     private final RiskAssessmentRepository repository;
 
-    public RiskAssessmentServiceImpl(RiskAssessmentLogRepository repository) {
+    public RiskAssessmentServiceImpl(RiskAssessmentRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void logAssessment(RiskAssessmentLog log) {
+    public void logAssessment(RiskAssessment log) {
         repository.save(log);
     }
 
     @Override
-    public List<RiskAssessmentLog> getLogsByRequest(Long requestId) {
+    public List<RiskAssessment> getLogsByRequest(Long requestId) {
         return repository.findByLoanRequestId(requestId);
     }
 }
