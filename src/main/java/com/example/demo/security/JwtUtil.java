@@ -1,12 +1,13 @@
 package com.example.demo.security;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import org.springframework.stereotype.Component;
 
-@Component
+import org.springframework.stereotype.Component;
+import io.jsonwebtoken.Claims;
+
+@Component // Ensures this is registered as a bean
 public class JwtUtil {
-    // MUST BE PUBLIC: Test calls this directly (Image 7)
+    // Standardize your methods here
     public Claims getAllClaims(String token) {
-        return Jwts.parser().setSigningKey("secret").parseClaimsJws(token).getBody();
+        // Implementation logic
+        return null; 
     }
 }

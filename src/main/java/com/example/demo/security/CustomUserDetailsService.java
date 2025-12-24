@@ -2,15 +2,13 @@ package com.example.demo.security;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
-import java.util.Collections;
-
-@Service
+@Service // Ensures this is registered as a bean
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -20,14 +18,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Matches the User entity manually created earlier
+        User user = userRepository.findByUsername(username); 
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+                user.getUsername(), 
+                user.getPassword(), 
+                new ArrayList<>() // Add roles/authorities if needed
         );
     }
 }
