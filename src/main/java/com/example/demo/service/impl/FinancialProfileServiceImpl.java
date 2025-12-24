@@ -1,27 +1,19 @@
 package com.example.demo.service.impl;
-
 import com.example.demo.entity.FinancialProfile;
 import com.example.demo.repository.FinancialProfileRepository;
-import com.example.demo.service.FinancialProfileService;
-import org.springframework.stereotype.Service;
+import com.example.demo.repository.UserRepository;
 
-@Service
-public class FinancialProfileServiceImpl implements FinancialProfileService {
+public class FinancialProfileServiceImpl {
+    private final FinancialProfileRepository financialProfileRepository;
+    private final UserRepository userRepository;
 
-    private final FinancialProfileRepository repository;
-
-    public FinancialProfileServiceImpl(FinancialProfileRepository repository) {
-        this.repository = repository;
+    // Constructor mismatch fix (Test line 57 expects 2 arguments)
+    public FinancialProfileServiceImpl(FinancialProfileRepository financialProfileRepository, UserRepository userRepository) {
+        this.financialProfileRepository = financialProfileRepository;
+        this.userRepository = userRepository;
     }
 
-    @Override
-    public FinancialProfile createOrUpdateProfile(FinancialProfile profile) {
-        return repository.save(profile);
-    }
-
-    @Override
-    public FinancialProfile getProfileByUser(Long userId) {
-        return repository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
+    public FinancialProfile createOrUpdate(FinancialProfile profile) {
+        return financialProfileRepository.save(profile);
     }
 }
