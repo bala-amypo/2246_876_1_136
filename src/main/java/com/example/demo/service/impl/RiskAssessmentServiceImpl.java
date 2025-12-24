@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class RiskAssessmentServiceImpl implements RiskAssessmentService {
 
-    private final RiskAssessmentLogRepository repository;
+    private final RiskAssessmentRepository repository;
 
     public RiskAssessmentServiceImpl(RiskAssessmentLogRepository repository) {
         this.repository = repository;
