@@ -3,22 +3,26 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.FinancialProfile;
 import com.example.demo.repository.FinancialProfileRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.service.FinancialProfileService; // Import interface
+import com.example.demo.service.FinancialProfileService;
 import org.springframework.stereotype.Service;
 
-@Service // This makes it a "Bean"
+@Service
 public class FinancialProfileServiceImpl implements FinancialProfileService {
 
     private final FinancialProfileRepository financialProfileRepository;
-    private final UserRepository userRepository;
 
-    public FinancialProfileServiceImpl(FinancialProfileRepository fRepo, UserRepository uRepo) {
-        this.financialProfileRepository = fRepo;
-        this.userRepository = uRepo;
+    public FinancialProfileServiceImpl(FinancialProfileRepository financialProfileRepository, UserRepository userRepository) {
+        this.financialProfileRepository = financialProfileRepository;
     }
 
     @Override
-    public FinancialProfile createOrUpdate(FinancialProfile profile) {
+    public FinancialProfile createOrUpdateProfile(FinancialProfile profile) {
         return financialProfileRepository.save(profile);
+    }
+
+    @Override
+    public FinancialProfile getProfileByUser(Long userId) {
+        // Assuming your repository has findByUserId or similar
+        return financialProfileRepository.findByUserId(userId);
     }
 }
