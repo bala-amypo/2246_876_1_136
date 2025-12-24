@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-	<start-class>com.example.demo.DemoApplication</start-class>
+	<start-class>com.example.demo.LoanEligibilityEmiRiskCheckerApplication</start-class>
 
 		<java.version>17</java.version>
 	</properties>
