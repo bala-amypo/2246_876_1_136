@@ -11,13 +11,13 @@ public class LoanEligibilityServiceImpl implements LoanEligibilityService {
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository financialProfileRepository;
     private final EligibilityResultRepository eligibilityResultRepository;
-    private final RiskAssessmentLogRepository riskAssessmentLogRepository;
+    private final RiskAssessmentRepository riskAssessmentRepository;
 
     public LoanEligibilityServiceImpl(
             LoanRequestRepository loanRequestRepository,
             FinancialProfileRepository financialProfileRepository,
             EligibilityResultRepository eligibilityResultRepository,
-            RiskAssessmentLogRepository riskAssessmentLogRepository) {
+            RiskAssessmentRepository riskAssessmentRepository) {
 
         this.loanRequestRepository = loanRequestRepository;
         this.financialProfileRepository = financialProfileRepository;
