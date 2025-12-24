@@ -1,26 +1,18 @@
 package com.example.demo.entity;
-
 import jakarta.persistence.*;
-import java.time.Instant;
+import lombok.Data;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Data
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String fullName;
-
-    @Column(nullable = false, unique = true)
-    private String email;
-
+    private String username;
     private String password;
-
-    private String role = "CUSTOMER";
-
-    private Instant createdAt = Instant.now();
+    private String email;
+    private String role; // Field expected by test line 198
+}
 
     // ✅ EMPTY CONSTRUCTOR (MANDATORY FOR JPA)
     public User() {
@@ -44,4 +36,4 @@ public class User {
 
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
-}
+

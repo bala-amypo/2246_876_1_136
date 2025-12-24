@@ -1,24 +1,18 @@
 package com.example.demo.entity;
-
 import jakarta.persistence.*;
-import java.time.Instant;
+import lombok.Data;
+import java.time.LocalDateTime;
 
 @Entity
+@Data
 public class LoanRequest {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    private User user;
-
-    private Double requestedAmount;
-    private Integer tenureMonths;
-    private String purpose;
-
-    private String status = "PENDING";
-    private Instant appliedAt = Instant.now();
+    private Double amount;
+    private String status; // Field expected by test line 297
+    private LocalDateTime submittedAt; // Method getSubmittedAt expected
+}
 
     // ✅ EMPTY CONSTRUCTOR
     public LoanRequest() {
