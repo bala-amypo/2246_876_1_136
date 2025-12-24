@@ -14,8 +14,7 @@ public class UserServiceImpl {
         this.userRepository = userRepository;
     }
 
-    // This method was causing the error. 
-    // We use .orElse(null) to convert Optional<User> to User.
+    // Fix for findById returning Optional
     public User getById(long id) {
         return userRepository.findById(id).orElse(null);
     }
@@ -24,7 +23,19 @@ public class UserServiceImpl {
         return userRepository.save(user);
     }
 
+    // In case your UserRepository.findByEmail also returns Optional
+    public User findByEmail(String email) {
+        Object result = userRepository.findByEmail(email);
+        if (result instanceof Optional) {
+            return ((Optional<User>) result).orElse(null);
+        }
+        return (User) result;
+    }
+
+    // If the above method feels too complex, use this standard version:
+    /*
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+    */
 }
