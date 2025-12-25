@@ -18,9 +18,10 @@ public class FinancialProfileController {
     public FinancialProfile createOrUpdate(@RequestBody FinancialProfile profile) {
         return service.createOrUpdateProfile(profile);
     }
-
-    @GetMapping("/user/{userId}")
-    public FinancialProfile getByUser(@PathVariable Long userId) {
-        return service.getProfileByUser(userId);
+    @GetMapping("/{userId}")
+     public FinancialProfile getProfile(@PathVariable Long userId) {
+    // Add .orElse(null) or .orElseThrow() here as well
+         return financialProfileService.getProfileByUser(userId).orElse(null);
     }
+    
 }
