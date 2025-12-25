@@ -11,18 +11,18 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository financialProfileRepository;
     private final EligibilityResultRepository eligibilityResultRepository;
-    private final RiskAssessmentLogRepository riskAssessmentLogRepository;
+    private final RiskAssessmentRepository riskAssessmentRepository;
 
     public EligibilityServiceImpl(
             LoanRequestRepository loanRequestRepository,
             FinancialProfileRepository financialProfileRepository,
             EligibilityResultRepository eligibilityResultRepository,
-            RiskAssessmentLogRepository riskAssessmentLogRepository) {
+            RiskAssessmentRepository riskAssessmentRepository) {
 
         this.loanRequestRepository = loanRequestRepository;
         this.financialProfileRepository = financialProfileRepository;
         this.eligibilityResultRepository = eligibilityResultRepository;
-        this.riskAssessmentLogRepository = riskAssessmentLogRepository;
+        this.riskAssessmentRepository = riskAssessmentRepository;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
         log.setLoanRequestId(loanRequestId);
         log.setDtiRatio(dtiRatio);
         log.setCreditCheckStatus("COMPLETED");
-        riskAssessmentLogRepository.save(log);
+        riskAssessmentRepository.save(log);
 
         return result;
     }
