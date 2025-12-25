@@ -30,10 +30,8 @@ public class LoanEligibilityServiceImpl implements LoanEligibilityService {
 
         LoanRequest loanRequest = loanRequestRepository.findById(loanRequestId)
                 .orElseThrow(() -> new RuntimeException("Loan request not found"));
-
-        FinancialProfile profile = financialProfileRepository
-                .findByUserId(loanRequest.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("Financial profile not found"));
+        FinancialProfile profile = financialProfileService.getProfileByUser(userId)
+                .orElseThrow(() -> new RuntimeException("Financial Profile not found"));
 
         double dtiRatio = (profile.getExistingLoanEmi()
                 + profile.getMonthlyExpenses()) / profile.getMonthlyIncome();
