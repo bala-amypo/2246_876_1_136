@@ -1,12 +1,9 @@
 package com.example.demo.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
@@ -18,33 +15,20 @@ public class JwtUtil {
 
     public JwtUtil(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.validity}") long validity) {
+            @Value("${jwt.validity}") long validity
+    ) {
         this.secret = secret;
         this.validity = validity;
     }
 
-    private Key getKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
-    }
-
     public String generateToken(Map<String, Object> claims, String subject) {
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + validity))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-    }
-
-    public Claims getAllClaims(String token) {
-
-        return Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
     }
 
     public boolean validateToken(String token) {
@@ -56,11 +40,15 @@ public class JwtUtil {
         }
     }
 
+    public Claims getAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
+
     public String getEmail(String token) {
         return getAllClaims(token).getSubject();
     }
 
     public String getRole(String token) {
-        return (String) getAllClaims(token).get("role");
+        return getAllClaims(token).get("role", String.class);
     }
 }
