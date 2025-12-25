@@ -1,3 +1,14 @@
+package com.example.demo.security;
+
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
+
+import org.springframework.stereotype.Service;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -12,7 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             throws UsernameNotFoundException {
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not found"));
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
