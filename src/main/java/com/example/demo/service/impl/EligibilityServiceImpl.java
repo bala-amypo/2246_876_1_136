@@ -6,14 +6,14 @@ import com.example.demo.service.LoanEligibilityService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoanEligibilityServiceImpl implements LoanEligibilityService {
+public class EligibilityServiceImpl implements LoanEligibilityService {
 
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository financialProfileRepository;
     private final EligibilityResultRepository eligibilityResultRepository;
     private final RiskAssessmentLogRepository riskAssessmentLogRepository;
 
-    public LoanEligibilityServiceImpl(
+    public EligibilityServiceImpl(
             LoanRequestRepository loanRequestRepository,
             FinancialProfileRepository financialProfileRepository,
             EligibilityResultRepository eligibilityResultRepository,
