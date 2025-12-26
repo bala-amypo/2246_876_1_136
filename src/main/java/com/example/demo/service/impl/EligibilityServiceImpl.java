@@ -43,7 +43,7 @@ package com.example.demo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EligibilityServiceImpl {
+public class EligibilityServiceImpl implements EligibilityService {
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository financialProfileRepository;
     private final EligibilityResultRepository eligibilityResultRepository;
@@ -56,6 +56,7 @@ public class EligibilityServiceImpl {
         this.eligibilityResultRepository = eligibilityResultRepository;
     }
     
+    @Override
     public EligibilityResult evaluateEligibility(Long loanRequestId) {
         if (eligibilityResultRepository.findByLoanRequestId(loanRequestId).isPresent()) {
             throw new BadRequestException("Eligibility already evaluated");
@@ -80,6 +81,7 @@ public class EligibilityServiceImpl {
         return eligibilityResultRepository.save(result);
     }
     
+    @Override
     public EligibilityResult getByLoanRequestId(Long loanRequestId) {
         return eligibilityResultRepository.findByLoanRequestId(loanRequestId)
             .orElseThrow(() -> new ResourceNotFoundException("Eligibility result not found"));
