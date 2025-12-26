@@ -1,4 +1,4 @@
-// package com.example.demo.service;
+ package com.example.demo.service;
 // import com.example.demo.entity.LoanRequest;
 // import java.util.List;
 // public interface LoanRequestService {
@@ -7,7 +7,7 @@
 //     LoanRequest getById(Long id);
 //     List<LoanRequest> getAllRequests();
 // }
-package com.example.demo;
+
 
 import java.util.List;
 

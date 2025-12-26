@@ -1,4 +1,4 @@
-// package com.example.demo.service.impl;
+ package com.example.demo.service.impl;
 
 // import com.example.demo.entity.RiskAssessment;
 // import com.example.demo.repository.FinancialProfileRepository;
@@ -30,7 +30,7 @@
 //         return getLogsByLoanRequestId(id); 
 //     }
 // }
-package com.example.demo;
+
 
 import org.springframework.stereotype.Service;
 

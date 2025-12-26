@@ -1,4 +1,4 @@
-// package com.example.demo.service.impl;
+ package com.example.demo.service.impl;
 
 // import com.example.demo.entity.LoanRequest;
 // import com.example.demo.repository.LoanRequestRepository;
@@ -23,7 +23,7 @@
 //     @Override public LoanRequest getById(Long id) { return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found")); }
 //     @Override public List<LoanRequest> getAllRequests() { return repository.findAll(); }
 // }
-package com.example.demo;
+
 
 import org.springframework.stereotype.Service;
 import java.util.List;

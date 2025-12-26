@@ -1,4 +1,4 @@
-// package com.example.demo.servlet;
+ package com.example.demo.servlet;
 
 // import jakarta.servlet.http.*;
 // import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +12,7 @@
 //         resp.getWriter().write("SimpleStatusServlet OK");
 //     }
 // }
-package com.example.demo;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
