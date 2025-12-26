@@ -5,7 +5,6 @@ import com.example.demo.repository.*;
 import com.example.demo.service.LoanEligibilityService;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class EligibilityServiceImpl implements LoanEligibilityService {
     private final LoanRequestRepository loanRequestRepository;
@@ -14,20 +13,19 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
     private final EligibilityResultRepository eligibilityResultRepository;
     private final RiskAssessmentRepository riskAssessmentRepository;
 
-    // Added 6th dummy repo if test passes it, or keep 5 if log indicates 5 required.
-    // Based on Image 2, it seems to pass an extra FinancialProfileRepository at the end.
-    public EligibilityServiceImpl(LoanRequestRepository lrr, FinancialProfileRepository fpr, 
-                                  UserRepository ur, EligibilityResultRepository err, 
-                                  RiskAssessmentRepository rar) {
+    // Test suite requires this specific constructor signature
+    public EligibilityServiceImpl(LoanRequestRepository lrr, 
+                                  FinancialProfileRepository fpr, 
+                                  UserRepository ur, 
+                                  EligibilityResultRepository err, 
+                                  RiskAssessmentRepository rar,
+                                  FinancialProfileRepository dummy) {
         this.loanRequestRepository = lrr;
         this.financialProfileRepository = fpr;
         this.userRepository = ur;
         this.eligibilityResultRepository = err;
         this.riskAssessmentRepository = rar;
     }
-    // ... implement evaluateEligibility and getResultByRequest using logic from your snippet
-
-    // ... update method implementations to use RiskAssessment renamed class
 
     @Override
     public EligibilityResult evaluateEligibility(Long loanRequestId) {
@@ -61,6 +59,12 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
     @Override
     public EligibilityResult getResultByRequest(Long loanRequestId) {
         return eligibilityResultRepository.findByLoanRequestId(loanRequestId)
-                .orElseThrow(() -> new RuntimeException("Eligibility result not found"));
+                .orElseThrow(() -> new RuntimeException("Result not found"));
+    }
+
+    // THIS METHOD WAS MISSING
+    @Override
+    public EligibilityResult getByLoanRequestId(Long loanRequestId) {
+        return getResultByRequest(loanRequestId);
     }
 }
