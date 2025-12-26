@@ -5,6 +5,10 @@ import java.time.Instant;
 
 @Entity
 public class LoanRequest {
+    public static final String PENDING = "PENDING";
+    public static final String APPROVED = "APPROVED";
+    public static final String REJECTED = "REJECTED";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,7 +17,7 @@ public class LoanRequest {
     private Double requestedAmount;
     private Integer tenureMonths;
     private String purpose;
-    public String Status = "PENDING"; // Public for test
+    private String status = PENDING; 
     private Instant appliedAt = Instant.now();
 
     public LoanRequest() {}
@@ -27,7 +31,7 @@ public class LoanRequest {
     public void setTenureMonths(Integer tenureMonths) { this.tenureMonths = tenureMonths; }
     public String getPurpose() { return purpose; }
     public void setPurpose(String purpose) { this.purpose = purpose; }
-    public String getStatus() { return Status; }
-    public void setStatus(String status) { this.Status = status; }
-    public Instant getSubmittedAt() { return appliedAt; } // Test expects this name
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public Instant getSubmittedAt() { return appliedAt; } 
 }

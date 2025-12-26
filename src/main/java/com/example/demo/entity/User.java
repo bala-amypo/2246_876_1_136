@@ -6,6 +6,9 @@ import java.time.Instant;
 @Entity
 @Table(name = "users")
 public class User {
+    public static final String CUSTOMER = "CUSTOMER";
+    public static final String ADMIN = "ADMIN";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,7 +16,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
-    public String Role = "CUSTOMER"; // Capitalized and public for test access
+    private String role = CUSTOMER; 
     private Instant createdAt = Instant.now();
 
     public User() {}
@@ -25,6 +28,6 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public String getRole() { return Role; }
-    public void setRole(String role) { this.Role = role; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }
