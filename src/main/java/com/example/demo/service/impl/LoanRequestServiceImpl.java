@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LoanRequestServiceImpl {
+public class LoanRequestServiceImpl implements LoanRequestService {
     private final LoanRequestRepository loanRequestRepository;
     private final UserRepository userRepository;
     
@@ -38,6 +38,7 @@ public class LoanRequestServiceImpl {
         this.userRepository = userRepository;
     }
     
+    @Override
     public LoanRequest submitRequest(LoanRequest request) {
         if (request.getRequestedAmount() == null || request.getRequestedAmount() <= 0) {
             throw new BadRequestException("Invalid requested amount");
@@ -46,10 +47,12 @@ public class LoanRequestServiceImpl {
         return loanRequestRepository.save(request);
     }
     
+    @Override
     public List<LoanRequest> getRequestsByUser(Long userId) {
         return loanRequestRepository.findByUserId(userId);
     }
     
+    @Override
     public LoanRequest getById(Long id) {
         return loanRequestRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Loan request not found"));

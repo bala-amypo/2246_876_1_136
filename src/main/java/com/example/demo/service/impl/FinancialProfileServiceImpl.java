@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class FinancialProfileServiceImpl {
+public class FinancialProfileServiceImpl implements FinancialProfileService {
     private final FinancialProfileRepository financialProfileRepository;
     private final UserRepository userRepository;
     
@@ -43,6 +43,7 @@ public class FinancialProfileServiceImpl {
         this.userRepository = userRepository;
     }
     
+    @Override
     public FinancialProfile createOrUpdate(FinancialProfile profile) {
         if (profile.getCreditScore() != null && profile.getCreditScore() < 300) {
             throw new BadRequestException("Invalid credit score");
@@ -62,6 +63,7 @@ public class FinancialProfileServiceImpl {
         return financialProfileRepository.save(profile);
     }
     
+    @Override
     public FinancialProfile getByUserId(Long userId) {
         return financialProfileRepository.findByUserId(userId)
             .orElseThrow(() -> new ResourceNotFoundException("Financial profile not found"));
