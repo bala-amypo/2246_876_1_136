@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import com.example.demo.entity.LoanRequest;
 import com.example.demo.service.LoanRequestService;
 import org.springframework.web.bind.annotation.*;
@@ -8,32 +7,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/loan-requests")
 public class LoanRequestController {
-
     private final LoanRequestService service;
+    public LoanRequestController(LoanRequestService service) { this.service = service; }
 
-    public LoanRequestController(LoanRequestService service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public LoanRequest submit(@RequestBody LoanRequest request) {
-        // Updated from submitLoanRequest to submitRequest
-        return service.submitRequest(request);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<LoanRequest> getByUser(@PathVariable Long userId) {
-        return service.getRequestsByUser(userId);
-    }
-
-    @GetMapping("/{id}")
-    public LoanRequest getById(@PathVariable Long id) {
-        // Updated from getRequestById to getById
-        return service.getById(id);
-    }
-
-    @GetMapping
-    public List<LoanRequest> getAll() {
-        return service.getAllRequests();
-    }
+    @PostMapping public LoanRequest submit(@RequestBody LoanRequest request) { return service.submitRequest(request); }
+    @GetMapping("/user/{userId}") public List<LoanRequest> getByUser(@PathVariable Long userId) { return service.getRequestsByUser(userId); }
+    @GetMapping("/{id}") public LoanRequest getById(@PathVariable Long id) { return service.getById(id); }
+    @GetMapping public List<LoanRequest> getAll() { return service.getAllRequests(); }
 }
