@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.RiskAssessment;
 import com.example.demo.service.RiskAssessmentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +16,8 @@ public class RiskLogController {
     }
 
     @GetMapping("/{loanRequestId}")
-    public RiskAssessment getLogs(@PathVariable Long loanRequestId) {
-        return service.getLogsByLoanRequestId(loanRequestId);
+    public ResponseEntity<RiskAssessment> getRisk(
+            @PathVariable Long loanRequestId) {
+        return ResponseEntity.ok(service.getByLoanRequestId(loanRequestId));
     }
 }
