@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
     private final UserService userService;
-    private final JwtUtil jwtUtil;               // Added field
-    private final UserRepository userRepository; // Added field
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
     public AuthController(UserService userService, JwtUtil jwtUtil, UserRepository userRepository) {
         this.userService = userService;
@@ -23,12 +22,15 @@ public class AuthController {
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
-        return userService.registerUser(user);
+        return userService.register(user);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthRequest authRequest) {
-        // Implementation for the test to pass
-        return "Login successful";
+    public org.springframework.http.ResponseEntity<com.example.demo.dto.AuthResponse> login(@RequestBody com.example.demo.dto.AuthRequest authRequest) {
+        User user = userService.findByEmail(authRequest.getEmail());
+        String token = jwtUtil.generateToken(new java.util.HashMap<>(), user.getEmail());
+        return org.springframework.http.ResponseEntity.ok(new com.example.demo.dto.AuthResponse(
+                token, user.getId(), user.getEmail(), user.getRole(), user.getFullName()
+        ));
     }
 }
