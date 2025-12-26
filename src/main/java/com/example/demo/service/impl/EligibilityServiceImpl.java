@@ -2,24 +2,25 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
-import com.example.demo.repository.RiskAssessmentRepository;
 import com.example.demo.service.LoanEligibilityService;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class EligibilityServiceImpl implements LoanEligibilityService {
+
     private final LoanRequestRepository loanRequestRepository;
-    private final UserRepository userRepository; // Added
+    private final UserRepository userRepository; // Added field
     private final FinancialProfileRepository financialProfileRepository;
     private final EligibilityResultRepository eligibilityResultRepository;
     private final RiskAssessmentRepository riskAssessmentRepository;
 
-    public EligibilityServiceImpl(LoanRequestRepository loanRequestRepository,
-                                  UserRepository userRepository,
-                                  FinancialProfileRepository financialProfileRepository,
-                                  EligibilityResultRepository eligibilityResultRepository,
-                                  RiskAssessmentRepository riskAssessmentRepository) {
+    public EligibilityServiceImpl(
+            LoanRequestRepository loanRequestRepository,
+            UserRepository userRepository, // Added parameter
+            FinancialProfileRepository financialProfileRepository,
+            EligibilityResultRepository eligibilityResultRepository,
+            RiskAssessmentRepository riskAssessmentRepository) {
+
         this.loanRequestRepository = loanRequestRepository;
         this.userRepository = userRepository;
         this.financialProfileRepository = financialProfileRepository;
@@ -27,19 +28,38 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
         this.riskAssessmentRepository = riskAssessmentRepository;
     }
 
-    // Update method name
-    @Override
-    public EligibilityResult getByLoanRequestId(Long loanRequestId) {
-        return eligibilityResultRepository.findByLoanRequestId(loanRequestId).orElse(null);
-    }
-    
-    // Ensure evaluateEligibility uses the renamed RiskAssessment class
     @Override
     public EligibilityResult evaluateEligibility(Long loanRequestId) {
-        // ... implementation logic ...
-        RiskAssessment log = new RiskAssessment(); // Use renamed class
-        // ...
+        LoanRequest loanRequest = loanRequestRepository.findById(loanRequestId)
+                .orElseThrow(() -> new RuntimeException("Loan request not found"));
+
+        FinancialProfile profile = financialProfileRepository
+                .findByUserId(loanRequest.getUser().getId())
+                .orElseThrow(() -> new RuntimeException("Financial profile not found"));
+
+        double dtiRatio = (profile.getExistingLoanEmi() + profile.getMonthlyExpenses()) / profile.getMonthlyIncome();
+        boolean eligible = dtiRatio < 0.5 && profile.getCreditScore() >= 650;
+
+        EligibilityResult result = new EligibilityResult();
+        result.setLoanRequest(loanRequest);
+        result.setIsEligible(eligible);
+        result.setRiskLevel(eligible ? "LOW" : "HIGH");
+        if (!eligible) result.setRejectionReason("High DTI ratio or low credit score");
+
+        eligibilityResultRepository.save(result);
+
+        RiskAssessment log = new RiskAssessment();
+        log.setLoanRequestId(loanRequestId);
+        log.setDtiRatio(dtiRatio);
+        log.setCreditCheckStatus("COMPLETED");
         riskAssessmentRepository.save(log);
+
         return result;
+    }
+
+    @Override
+    public EligibilityResult getResultByRequest(Long loanRequestId) {
+        return eligibilityResultRepository.findByLoanRequestId(loanRequestId)
+                .orElseThrow(() -> new RuntimeException("Eligibility result not found"));
     }
 }
