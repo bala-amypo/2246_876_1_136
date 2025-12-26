@@ -1,5 +1,6 @@
 package com.example.demo.security;
 
+import com.example.demo.repository.UserRepository; // Added this import
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
-    private final UserRepository userRepository;
+    private final UserRepository userRepository; // Added field
 
     public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService, UserRepository userRepository) {
         this.jwtUtil = jwtUtil;
