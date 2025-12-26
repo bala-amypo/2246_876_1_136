@@ -1,4 +1,4 @@
-// package com.example.demo.service.impl;
+ package com.example.demo.service.impl;
 
 // import com.example.demo.entity.FinancialProfile;
 // import com.example.demo.repository.FinancialProfileRepository;
@@ -28,7 +28,7 @@
 //                 .orElseThrow(() -> new RuntimeException("Profile not found"));
 //     }
 // }
-package com.example.demo;
+
 
 import org.springframework.stereotype.Service;
 import java.util.Optional;

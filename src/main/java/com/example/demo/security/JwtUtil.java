@@ -1,4 +1,4 @@
-// package com.example.demo.security;
+ package com.example.demo.security;
 
 // import io.jsonwebtoken.*;
 // import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +52,7 @@
 //         return getAllClaims(token).get("role", String.class);
 //     }
 // }
-package com.example.demo;
+
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

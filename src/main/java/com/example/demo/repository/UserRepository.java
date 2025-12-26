@@ -1,4 +1,4 @@
-// package com.example.demo.repository;
+ package com.example.demo.repository;
 
 // import com.example.demo.entity.User;
 // import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@
 
 //     Optional<User> findByEmail(String email);
 // }
-package com.example.demo;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

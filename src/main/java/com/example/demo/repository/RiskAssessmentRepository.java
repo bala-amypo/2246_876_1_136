@@ -1,4 +1,4 @@
-// package com.example.demo.repository;
+ package com.example.demo.repository;
 
 // import com.example.demo.entity.RiskAssessment;
 // import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@
 //     // Note: Test suite usually expects Optional for single results
 //     Optional<RiskAssessment> findByLoanRequestId(Long loanRequestId);
 // }
-package com.example.demo;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

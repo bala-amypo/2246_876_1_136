@@ -1,4 +1,4 @@
-// package com.example.demo.security;
+ package com.example.demo.security;
 
 // import com.example.demo.repository.UserRepository;
 // import jakarta.servlet.FilterChain;
@@ -35,7 +35,7 @@
 //         chain.doFilter(request, response);
 //     }
 // }
-package com.example.demo;
+
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

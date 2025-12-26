@@ -1,4 +1,4 @@
-// package com.example.demo.exception;
+ package com.example.demo.exception;
 
 // import org.springframework.http.HttpStatus;
 // import org.springframework.web.bind.annotation.ResponseStatus;
@@ -9,7 +9,7 @@
 //         super(message);
 //     }
 // }
-package com.example.demo;
+
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
