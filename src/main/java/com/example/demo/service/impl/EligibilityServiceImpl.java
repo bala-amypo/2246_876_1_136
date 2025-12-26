@@ -5,28 +5,27 @@ import com.example.demo.repository.*;
 import com.example.demo.service.LoanEligibilityService;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class EligibilityServiceImpl implements LoanEligibilityService {
-
     private final LoanRequestRepository loanRequestRepository;
-    private final UserRepository userRepository; // Added field
     private final FinancialProfileRepository financialProfileRepository;
+    private final UserRepository userRepository;
     private final EligibilityResultRepository eligibilityResultRepository;
     private final RiskAssessmentRepository riskAssessmentRepository;
 
-    public EligibilityServiceImpl(
-            LoanRequestRepository loanRequestRepository,
-            UserRepository userRepository, // Added parameter
-            FinancialProfileRepository financialProfileRepository,
-            EligibilityResultRepository eligibilityResultRepository,
-            RiskAssessmentRepository riskAssessmentRepository) {
-
+    public EligibilityServiceImpl(LoanRequestRepository loanRequestRepository,
+                                  FinancialProfileRepository financialProfileRepository,
+                                  UserRepository userRepository,
+                                  EligibilityResultRepository eligibilityResultRepository,
+                                  RiskAssessmentRepository riskAssessmentRepository) {
         this.loanRequestRepository = loanRequestRepository;
-        this.userRepository = userRepository;
         this.financialProfileRepository = financialProfileRepository;
+        this.userRepository = userRepository;
         this.eligibilityResultRepository = eligibilityResultRepository;
         this.riskAssessmentRepository = riskAssessmentRepository;
     }
+    // ... update method implementations to use RiskAssessment renamed class
 
     @Override
     public EligibilityResult evaluateEligibility(Long loanRequestId) {
