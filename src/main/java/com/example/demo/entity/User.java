@@ -6,8 +6,10 @@ import java.time.Instant;
 @Entity
 @Table(name = "users")
 public class User {
+    // Add these static constants for test access
     public static final String CUSTOMER = "CUSTOMER";
     public static final String ADMIN = "ADMIN";
+    public static final String Role = CUSTOMER; // To fix static reference error
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +18,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
-    
-    // Test expects public field with this specific case
-    public String Role = CUSTOMER; 
-    
+    private String userRole = Role; 
     private Instant createdAt = Instant.now();
 
     public User() {}
@@ -31,6 +30,6 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public String getRole() { return Role; }
-    public void setRole(String role) { this.Role = role; }
+    public String getRole() { return userRole; }
+    public void setRole(String role) { this.userRole = role; }
 }
