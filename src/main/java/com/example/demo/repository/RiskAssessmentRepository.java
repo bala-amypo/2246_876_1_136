@@ -1,10 +1,10 @@
-package com.example.demo.repository;
+// package com.example.demo.repository;
 
-import com.example.demo.entity.RiskAssessment;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
+// import com.example.demo.entity.RiskAssessment;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import java.util.Optional;
 
-public interface RiskAssessmentRepository extends JpaRepository<RiskAssessment, Long> {
-    // Note: Test suite usually expects Optional for single results
-    Optional<RiskAssessment> findByLoanRequestId(Long loanRequestId);
-}
+// public interface RiskAssessmentRepository extends JpaRepository<RiskAssessment, Long> {
+//     // Note: Test suite usually expects Optional for single results
+//     Optional<RiskAssessment> findByLoanRequestId(Long loanRequestId);
+// }
