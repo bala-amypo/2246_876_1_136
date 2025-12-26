@@ -13,7 +13,7 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
     private final EligibilityResultRepository eligibilityResultRepository;
     private final RiskAssessmentLogRepository riskAssessmentLogRepository;
 
-    // ✅ This is a CONSTRUCTOR — NO return type
+   
     public EligibilityServiceImpl(
             LoanRequestRepository loanRequestRepository,
             FinancialProfileRepository financialProfileRepository,
