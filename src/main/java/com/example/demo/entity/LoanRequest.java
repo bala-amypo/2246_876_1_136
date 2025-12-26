@@ -1,4 +1,4 @@
-// package com.example.demo.entity;
+ package com.example.demo.entity;
 
 // import jakarta.persistence.*;
 // import java.time.Instant;
@@ -37,7 +37,7 @@
 //     public void setStatus(String status) { this.currentStatus = status; }
 //     public Instant getSubmittedAt() { return appliedAt; } 
 // }
-package com.example.demo;
+
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-// package com.example.demo.entity;
+ package com.example.demo.entity;
 
 // import jakarta.persistence.*;
 // import java.time.Instant;
@@ -50,7 +50,7 @@
 //     public Instant getLastUpdatedAt() { return lastUpdatedAt; }
 //     public void setLastUpdatedAt(Instant lastUpdatedAt) { this.lastUpdatedAt = lastUpdatedAt; }
 // }
-package com.example.demo;
+
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-// package com.example.demo.dto;
+ package com.example.demo.dto;
 
 // public class AuthResponse {
 //     private String token;
@@ -21,7 +21,7 @@
 //     public String getRole() { return role; }
 //     public String getFullName() { return fullName; }
 // }
-package com.example.demo;
+
 
 public class AuthResponse {
     private String token;

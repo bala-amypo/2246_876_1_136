@@ -1,4 +1,4 @@
-// package com.example.demo.dto;
+ package com.example.demo.dto;
 
 // public class AuthRequest {
 //     private String email;
@@ -15,7 +15,7 @@
 //     public String getPassword() { return password; }
 //     public void setPassword(String password) { this.password = password; }
 // }
-package com.example.demo;
+
 
 public class AuthRequest {
     private String email;

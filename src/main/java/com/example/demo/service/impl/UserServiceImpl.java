@@ -1,4 +1,4 @@
-// package com.example.demo.service.impl;
+ package com.example.demo.service.impl;
 // import com.example.demo.entity.User;
 // import com.example.demo.repository.UserRepository;
 // import com.example.demo.service.UserService;
@@ -12,7 +12,7 @@
 //     @Override public User getById(Long id) { return userRepository.findById(id).orElse(null); }
 //     @Override public User findByEmail(String email) { return userRepository.findByEmail(email).orElse(null); }
 // }
-package com.example.demo;
+
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-// package com.example.demo.entity;
+ package com.example.demo.entity;
 
 // import jakarta.persistence.*;
 // import java.time.Instant;
@@ -26,7 +26,7 @@
 //     public Double getRiskScore() { return riskScore; }
 //     public void setRiskScore(Double riskScore) { this.riskScore = riskScore; }
 // }
-package com.example.demo;
+
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-// package com.example.demo.dto;
+ package com.example.demo.dto;
 
 // import java.time.LocalDateTime;
 
@@ -108,7 +108,7 @@
 //         public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
 //     }
 // }
-package com.example.demo;
+
 
 public class LoanDtos {
     // Placeholder class for DTOs
