@@ -6,8 +6,8 @@ import java.io.IOException;
 
 @WebServlet("/status")
 public class SimpleStatusServlet extends HttpServlet {
-
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
         resp.getWriter().write("SimpleStatusServlet OK");
     }
