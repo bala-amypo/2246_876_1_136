@@ -13,11 +13,10 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
-    private String Role = "CUSTOMER"; // Capitalized to match test
+    public String Role = "CUSTOMER"; // Capitalized and public for test access
     private Instant createdAt = Instant.now();
 
     public User() {}
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getFullName() { return fullName; }
