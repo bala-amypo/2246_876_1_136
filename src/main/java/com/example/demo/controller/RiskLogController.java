@@ -16,6 +16,7 @@ public class RiskLogController {
 
     @GetMapping("/{loanRequestId}")
     public RiskAssessment getLogs(@PathVariable Long loanRequestId) {
+        // Calling the method name expected by the test
         return service.getLogsByLoanRequestId(loanRequestId);
     }
 }
