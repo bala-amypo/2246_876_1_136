@@ -1,35 +1,58 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+@Component
 public class JwtUtil {
 
-    private final Key signingKey;
-    private final long expirationMillis;
+    // 🔐 Secret key (must be at least 256 bits for HS256)
+    private static final String SECRET =
+            "mysecretkeymysecretkeymysecretkeymysecretkey";
 
-    public JwtUtil(String secret, long expirationMillis) {
-        this.signingKey = Keys.hmacShaKeyFor(secret.getBytes());
-        this.expirationMillis = expirationMillis;
+    // ⏱ Token validity (1 hour)
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60;
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    public String generateToken(Map<String, Object> claims, String subject) {
+    // ✅ Generate JWT Token
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
-                .signWith(signingKey, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Claims getAllClaims(String token) {
+    // ✅ Extract username from token
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    // ✅ Validate token
+    public boolean validateToken(String token) {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 🔍 Extract claims
+    private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(signingKey)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
