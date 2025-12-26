@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class FinancialProfileServiceImpl implements FinancialProfileService {
 
     private final FinancialProfileRepository repository;
-    private final UserRepository userRepository; // Added field
+    private final UserRepository userRepository;
 
     public FinancialProfileServiceImpl(FinancialProfileRepository repository, UserRepository userRepository) {
         this.repository = repository;
@@ -18,12 +18,12 @@ public class FinancialProfileServiceImpl implements FinancialProfileService {
     }
 
     @Override
-    public FinancialProfile createOrUpdateProfile(FinancialProfile profile) {
+    public FinancialProfile createOrUpdate(FinancialProfile profile) {
         return repository.save(profile);
     }
 
     @Override
-    public FinancialProfile getProfileByUser(Long userId) {
+    public FinancialProfile getByUserId(Long userId) {
         return repository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
     }

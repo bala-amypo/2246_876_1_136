@@ -16,11 +16,13 @@ public class FinancialProfileController {
 
     @PostMapping
     public FinancialProfile createOrUpdate(@RequestBody FinancialProfile profile) {
-        return service.createOrUpdateProfile(profile);
+        // Updated from createOrUpdateProfile to createOrUpdate
+        return service.createOrUpdate(profile);
     }
 
     @GetMapping("/user/{userId}")
     public FinancialProfile getByUser(@PathVariable Long userId) {
-        return service.getProfileByUser(userId);
+        // Updated from getProfileByUser to getByUserId
+        return service.getByUserId(userId);
     }
 }
