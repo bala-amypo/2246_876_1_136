@@ -29,7 +29,6 @@ public class JwtFilter extends OncePerRequestFilter {
             jwt = authHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
 
-            // Validate token (this fixes the previous missing validateToken method)
             if (!jwtUtil.validateToken(jwt, username)) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
                 return;

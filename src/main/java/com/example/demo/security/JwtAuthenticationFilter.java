@@ -22,19 +22,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-
         String username = null;
         String jwt = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
-        }
 
-        // Here you can set the authenticated user in Spring Security context if needed
-        // For demo, we just validate the token
-        if (username != null && jwtUtil.isTokenValid(jwt, username)) {
-            System.out.println("JWT is valid for user: " + username);
+            if (!jwtUtil.validateToken(jwt, username)) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
