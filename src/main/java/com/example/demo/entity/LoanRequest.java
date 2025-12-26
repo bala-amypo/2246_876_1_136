@@ -17,7 +17,10 @@ public class LoanRequest {
     private Double requestedAmount;
     private Integer tenureMonths;
     private String purpose;
-    private String status = PENDING; 
+    
+    // Test expects public field with this specific case
+    public String Status = PENDING; 
+    
     private Instant appliedAt = Instant.now();
 
     public LoanRequest() {}
@@ -31,7 +34,7 @@ public class LoanRequest {
     public void setTenureMonths(Integer tenureMonths) { this.tenureMonths = tenureMonths; }
     public String getPurpose() { return purpose; }
     public void setPurpose(String purpose) { this.purpose = purpose; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getStatus() { return Status; }
+    public void setStatus(String status) { this.Status = status; }
     public Instant getSubmittedAt() { return appliedAt; } 
 }
