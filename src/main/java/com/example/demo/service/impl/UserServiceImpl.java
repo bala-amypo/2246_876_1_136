@@ -15,14 +15,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(User user) {
-        // NO PasswordEncoder (to avoid dependency issue)
+    public User register(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getById(Long id) {
         return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
