@@ -4,17 +4,17 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-public class RiskAssessment { // Renamed from RiskAssessmentLog
+public class RiskAssessment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long loanRequestId;
     private Double dtiRatio;
     private String creditCheckStatus;
+    private Double riskScore = 0.0; // Added field for test
     private Instant timestamp = Instant.now();
 
     public RiskAssessment() {}
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getLoanRequestId() { return loanRequestId; }
@@ -23,4 +23,6 @@ public class RiskAssessment { // Renamed from RiskAssessmentLog
     public void setDtiRatio(Double dtiRatio) { this.dtiRatio = dtiRatio; }
     public String getCreditCheckStatus() { return creditCheckStatus; }
     public void setCreditCheckStatus(String status) { this.creditCheckStatus = status; }
+    public Double getRiskScore() { return riskScore; }
+    public void setRiskScore(Double riskScore) { this.riskScore = riskScore; }
 }

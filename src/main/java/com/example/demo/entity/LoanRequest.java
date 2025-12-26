@@ -13,11 +13,10 @@ public class LoanRequest {
     private Double requestedAmount;
     private Integer tenureMonths;
     private String purpose;
-    private String Status = "PENDING"; // Capitalized
+    public String Status = "PENDING"; // Public for test
     private Instant appliedAt = Instant.now();
 
     public LoanRequest() {}
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public User getUser() { return user; }
@@ -30,5 +29,5 @@ public class LoanRequest {
     public void setPurpose(String purpose) { this.purpose = purpose; }
     public String getStatus() { return Status; }
     public void setStatus(String status) { this.Status = status; }
-    public Instant getSubmittedAt() { return appliedAt; } // Method name expected by test
+    public Instant getSubmittedAt() { return appliedAt; } // Test expects this name
 }
