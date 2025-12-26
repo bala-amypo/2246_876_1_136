@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface RiskAssessmentService {
 
-    void logAssessment(RiskAssessment log);
+    // Renamed from logAssessment to assessRisk
+    void assessRisk(RiskAssessment log);
 
-    List<RiskAssessment> getLogsByRequest(Long requestId);
+    // Renamed from getLogsByRequest to getLogsByLoanRequestId
+    RiskAssessment getLogsByLoanRequestId(Long requestId);
 }

@@ -1,18 +1,16 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.RiskAssessment;
-import com.example.demo.repository.FinancialProfileRepository; // Added this import
+import com.example.demo.repository.FinancialProfileRepository;
 import com.example.demo.repository.RiskAssessmentRepository;
 import com.example.demo.service.RiskAssessmentService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RiskAssessmentServiceImpl implements RiskAssessmentService {
 
     private final RiskAssessmentRepository repository;
-    private final FinancialProfileRepository financialProfileRepository; // Added field
+    private final FinancialProfileRepository financialProfileRepository;
 
     public RiskAssessmentServiceImpl(RiskAssessmentRepository repository, 
                                      FinancialProfileRepository financialProfileRepository) {
@@ -27,6 +25,7 @@ public class RiskAssessmentServiceImpl implements RiskAssessmentService {
 
     @Override
     public RiskAssessment getLogsByLoanRequestId(Long requestId) {
+        // Returns the singular RiskAssessment entity as expected by the Controller/Test
         return repository.findByLoanRequestId(requestId).orElse(null);
     }
 }
