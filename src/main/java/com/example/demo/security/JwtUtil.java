@@ -1,69 +1,67 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import java.io.IOException;
 
 @Component
-public class JwtUtil {
+public class JwtFilter extends OncePerRequestFilter {
 
-    private final String SECRET_KEY = "mysecretkey";
+    @Autowired
+    private JwtUtil jwtUtil;
 
-    // Extract username
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-    // Extract expiration date
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
-    // Generic claim extractor
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
+        String authHeader = request.getHeader("Authorization");
+        String jwt = null;
+        String username = null;
 
-    // Parse token
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-    }
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
+            username = jwtUtil.extractUsername(jwt);
+        }
 
-    // ✅ MISSING METHOD — NOW FIXED
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-    // Validate token
-    public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    }
+            UserDetails userDetails =
+                    userDetailsService.loadUserByUsername(username);
 
-    // Generate token
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
-    }
+            if (jwtUtil.validateToken(jwt, userDetails)) {
 
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+
+        filterChain.doFilter(request, response);
     }
 }
