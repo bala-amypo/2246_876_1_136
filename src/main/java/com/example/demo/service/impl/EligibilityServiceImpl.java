@@ -2,8 +2,10 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
+import com.example.demo.repository.RiskAssessmentRepository;
 import com.example.demo.service.LoanEligibilityService;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class EligibilityServiceImpl implements LoanEligibilityService {
@@ -11,18 +13,18 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository financialProfileRepository;
     private final EligibilityResultRepository eligibilityResultRepository;
-    private final RiskAssessmentRepository riskAssessmentLogRepository;
+    private final RiskAssessmentRepository riskAssessmentRepository;
 
     public EligibilityServiceImpl(
             LoanRequestRepository loanRequestRepository,
             FinancialProfileRepository financialProfileRepository,
             EligibilityResultRepository eligibilityResultRepository,
-            RiskAssessmentRepository riskAssessmentLogRepository) {
+            RiskAssessmentRepository riskAssessmentRepository) {
 
         this.loanRequestRepository = loanRequestRepository;
         this.financialProfileRepository = financialProfileRepository;
         this.eligibilityResultRepository = eligibilityResultRepository;
-        this.riskAssessmentLogRepository = riskAssessmentLogRepository;
+        this.riskAssessmentRepository = riskAssessmentRepository;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class EligibilityServiceImpl implements LoanEligibilityService {
         log.setLoanRequestId(loanRequestId);
         log.setDtiRatio(dtiRatio);
         log.setCreditCheckStatus("COMPLETED");
-        riskAssessmentLogRepository.save(log);
+        riskAssessmentRepository.save(log);
 
         return result;
     }
