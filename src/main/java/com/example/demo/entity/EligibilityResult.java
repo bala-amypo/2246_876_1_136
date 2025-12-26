@@ -1,50 +1,52 @@
-package com.example.demo.entity;
+// package com.example.demo;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "eligibility_results")
 public class EligibilityResult {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @OneToOne
+    @JoinColumn(name = "loan_request_id")
     private LoanRequest loanRequest;
-
-    private Boolean isEligible;
+    
+    @Column(name = "max_eligible_amount")
     private Double maxEligibleAmount;
-    private Double estimatedEmi;
-    private String riskLevel;
-    private String rejectionReason;
-
-    private Instant calculatedAt = Instant.now();
-
-    public EligibilityResult() {
+    
+    @Column(name = "recommended_emi")
+    private Double recommendedEmi;
+    
+    @Column(name = "is_eligible")
+    private Boolean isEligible;
+    
+    @Column(name = "evaluated_at")
+    private LocalDateTime evaluatedAt;
+    
+    @PrePersist
+    protected void onCreate() {
+        evaluatedAt = LocalDateTime.now();
     }
-
+    
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
+    
     public LoanRequest getLoanRequest() { return loanRequest; }
     public void setLoanRequest(LoanRequest loanRequest) { this.loanRequest = loanRequest; }
-
-    public Boolean getIsEligible() { return isEligible; }
-    public void setIsEligible(Boolean isEligible) { this.isEligible = isEligible; }
-
+    
     public Double getMaxEligibleAmount() { return maxEligibleAmount; }
     public void setMaxEligibleAmount(Double maxEligibleAmount) { this.maxEligibleAmount = maxEligibleAmount; }
-
-    public Double getEstimatedEmi() { return estimatedEmi; }
-    public void setEstimatedEmi(Double estimatedEmi) { this.estimatedEmi = estimatedEmi; }
-
-    public String getRiskLevel() { return riskLevel; }
-    public void setRiskLevel(String riskLevel) { this.riskLevel = riskLevel; }
-
-    public String getRejectionReason() { return rejectionReason; }
-    public void setRejectionReason(String rejectionReason) { this.rejectionReason = rejectionReason; }
-
-    public Instant getCalculatedAt() { return calculatedAt; }
-    public void setCalculatedAt(Instant calculatedAt) { this.calculatedAt = calculatedAt; }
+    
+    public Double getRecommendedEmi() { return recommendedEmi; }
+    public void setRecommendedEmi(Double recommendedEmi) { this.recommendedEmi = recommendedEmi; }
+    
+    public Boolean getIsEligible() { return isEligible; }
+    public void setIsEligible(Boolean isEligible) { this.isEligible = isEligible; }
+    
+    public LocalDateTime getEvaluatedAt() { return evaluatedAt; }
+    public void setEvaluatedAt(LocalDateTime evaluatedAt) { this.evaluatedAt = evaluatedAt; }
 }
