@@ -35,7 +35,7 @@ package com.example.demo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RiskAssessmentServiceImpl {
+public class RiskAssessmentServiceImpl implements RiskAssessmentService {
     private final LoanRequestRepository loanRequestRepository;
     private final FinancialProfileRepository financialProfileRepository;
     private final RiskAssessmentRepository riskAssessmentRepository;
@@ -48,6 +48,7 @@ public class RiskAssessmentServiceImpl {
         this.riskAssessmentRepository = riskAssessmentRepository;
     }
     
+    @Override
     public RiskAssessment assessRisk(Long loanRequestId) {
         if (riskAssessmentRepository.findByLoanRequestId(loanRequestId).isPresent()) {
             throw new BadRequestException("Risk already assessed");
@@ -91,6 +92,7 @@ public class RiskAssessmentServiceImpl {
         return Math.min(100, score);
     }
     
+    @Override
     public RiskAssessment getByLoanRequestId(Long loanRequestId) {
         return riskAssessmentRepository.findByLoanRequestId(loanRequestId)
             .orElseThrow(() -> new ResourceNotFoundException("Risk assessment not found"));
