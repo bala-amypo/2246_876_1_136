@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.LoanRequest;
-import com.example.demo.service.LoanRequestService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import com.example.demo.service.LoanRequestService;
+import com.example.demo.entity.LoanRequest;
 
 @RestController
-@RequestMapping("/api/loan-requests")
+@RequestMapping("/api/loan")
 public class LoanRequestController {
 
     private final LoanRequestService service;
@@ -17,25 +15,14 @@ public class LoanRequestController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<LoanRequest> submit(@RequestBody LoanRequest request) {
-        return ResponseEntity.ok(service.submitRequest(request));
+    @PostMapping("/{userId}")
+    public LoanRequest submit(@PathVariable Long userId,
+                              @RequestBody LoanRequest request) {
+        return service.submit(userId, request);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<LoanRequest>> getByUser(
-            @PathVariable Long userId) {
-        return ResponseEntity.ok(service.getRequestsByUser(userId));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<LoanRequest> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<LoanRequest>> getAll() {
-        // Used only for Swagger browsing
-        return ResponseEntity.ok(service.getRequestsByUser(null));
+    @GetMapping("/{userId}")
+    public List<LoanRequest> getUserLoans(@PathVariable Long userId) {
+        return service.getByUser(userId);
     }
 }
