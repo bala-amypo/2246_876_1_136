@@ -3,9 +3,10 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
-    public enum Role { ADMIN, CUSTOMER }
+    public enum Role { CUSTOMER, ADMIN }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,21 +14,14 @@ public class User {
 
     private String fullName;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String password;
 
     private String role;
 
-    @PrePersist
-    public void prePersist() {
-        if (role == null) {
-            role = Role.CUSTOMER.name();
-        }
-    }
-
-    // getters and setters
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
