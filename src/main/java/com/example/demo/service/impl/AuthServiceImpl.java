@@ -1,42 +1,28 @@
 package com.example.demo.service.impl;
 
 import org.springframework.stereotype.Service;
-import com.example.demo.service.AuthService;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.*;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class UserServiceImpl implements AuthService {
 
-    private final UserRepository userRepo;
+    private final UserRepository userRepository;
 
-    public AuthServiceImpl(UserRepository userRepo) {
-        this.userRepo = userRepo;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @Override
-    public User register(String fullName, String email, String password) {
-        if (userRepo.findByEmail(email).isPresent())
+    public User create(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BadRequestException("Email already exists");
-
-        User user = new User();
-        user.setFullName(fullName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRole("CUSTOMER");
-
-        return userRepo.save(user);
+        }
+        return userRepository.save(user);
     }
 
-    @Override
-    public User login(String email, String password) {
-        User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
-
-        if (!user.getPassword().equals(password))
-            throw new BadRequestException("Invalid credentials");
-
-        return user;
+    public User get(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }
