@@ -6,9 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 public class LoanRequest {
 
-    public enum Status {
-        PENDING, APPROVED, REJECTED
-    }
+    public enum Status { PENDING, APPROVED, REJECTED }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,77 +16,29 @@ public class LoanRequest {
     private User user;
 
     private Double requestedAmount;
-
     private Integer tenureMonths;
-
     private String status;
-
     private LocalDateTime submittedAt;
 
-    // ✅ Constructor default (tests rely on this)
-    public LoanRequest() {
+    @PrePersist
+    public void init() {
         this.status = Status.PENDING.name();
         this.submittedAt = LocalDateTime.now();
     }
 
-    @PrePersist
-    public void prePersist() {
-        if (status == null) {
-            status = Status.PENDING.name();
-        }
-        if (submittedAt == null) {
-            submittedAt = LocalDateTime.now();
-        }
-    }
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    // ===== GETTERS & SETTERS =====
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-    public Long getId() {
-        return id;
-    }
+    public Double getRequestedAmount() { return requestedAmount; }
+    public void setRequestedAmount(Double requestedAmount) { this.requestedAmount = requestedAmount; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Integer getTenureMonths() { return tenureMonths; }
+    public void setTenureMonths(Integer tenureMonths) { this.tenureMonths = tenureMonths; }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Double getRequestedAmount() {
-        return requestedAmount;
-    }
-
-    public void setRequestedAmount(Double requestedAmount) {
-        this.requestedAmount = requestedAmount;
-    }
-
-    public Integer getTenureMonths() {
-        return tenureMonths;
-    }
-
-    public void setTenureMonths(Integer tenureMonths) {
-        this.tenureMonths = tenureMonths;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    // ✅ THIS WAS MISSING (caused compile error)
-    public LocalDateTime getSubmittedAt() {
-        return submittedAt;
-    }
-
-    public void setSubmittedAt(LocalDateTime submittedAt) {
-        this.submittedAt = submittedAt;
-    }
+    public String getStatus() { return status; }
+    public LocalDateTime getSubmittedAt() { return submittedAt; }
 }
