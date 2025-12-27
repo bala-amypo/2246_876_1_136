@@ -19,7 +19,7 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .servers(List.of(
-                        new Server().url("https://9244.pro604cr.amypo.ai/")
+                        new Server().url("")
                 ))
                 .info(new Info()
                         .title("Loan Eligibility EMI Risk Checker API")
